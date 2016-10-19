@@ -22,7 +22,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int webTrue=2;
-    private static final int webFalse=3;
+    private static final int dataFalse=3;
+    private static final int dataNull=4;
+    private static final int netFalse=5;
     private Button button;
     private EditText start, end;
     private List<BarChartBean> mBarChartBeanList = new ArrayList<BarChartBean>();
@@ -59,17 +61,24 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     break;
-                case webFalse:
+                case dataFalse:
                     start.setText("");
                     end.setText("");
                     start.requestFocus();
                     Toast.makeText(getApplicationContext(),"输入格式错误",Toast.LENGTH_LONG).show();
                     break;
+                case dataNull:
+                    start.setText("");
+                    end.setText("");
+                    start.requestFocus();
+                    Toast.makeText(getApplicationContext(),"该时间段内无数据",Toast.LENGTH_LONG).show();
+                    break;
+                case netFalse:
+                    Toast.makeText(getApplicationContext(),"网络出错",Toast.LENGTH_LONG).show();
+                    break;
             }
         }
     };
-    ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,22 +104,24 @@ public class MainActivity extends AppCompatActivity {
                     String endTime = bundle.getString("endTime");
                     List<String> Name = new ArrayList<String>();
                     List<String> Count = new ArrayList<String>();
-                    Boolean dataGet = WebUtils.getPLATOData(Name, Count, startTime, endTime);
-                    if (dataGet) {
+                    Message message = mHandler.obtainMessage();
+                    int dataGet = WebUtils.getPLATOData(Name, Count, startTime, endTime);
+                    if (dataGet==WebUtils.dataTrue) {
                         List<BarChartBean> barChartBeanList = new ArrayList<BarChartBean>();
                         for (int i = 0; i < Name.size(); i++) {
                             int num = Integer.parseInt(Count.get(i));
                             barChartBeanList.add(new BarChartBean(Name.get(i), num, Color.BLUE));
                         }
-                        Message message = mHandler.obtainMessage();
                         message.what = webTrue;
                         message.obj = barChartBeanList;
-                        mHandler.sendMessage(message);
-                    } else {
-                        Message message = mHandler.obtainMessage();
-                        message.what = webFalse;
-                        mHandler.sendMessage(message);
+                    } else if (dataGet==WebUtils.dataFalse){
+                        message.what = dataFalse;
+                    }else if (dataGet==WebUtils.dataNull){
+                        message.what=dataNull;
+                    }else if (dataGet==WebUtils.netFalse){
+                        message.what=netFalse;
                     }
+                    mHandler.sendMessage(message);
                 }
             };
             Message message = mHandler.obtainMessage();

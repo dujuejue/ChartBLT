@@ -37,6 +37,14 @@ import java.util.List;
  * Created by dutingjue on 2016/10/10.
  */
 public class WebUtils {
+    //该请求没有数据
+    static final int dataFalse=0;
+    //请求格式错误
+    static final int dataNull=1;
+    //请求成功
+    static final int dataTrue=2;
+    //网络问题
+    static final int netFalse=3;
     //WebService命名空间
     static final String SERVICE_NS = "http://mestest.org/";
     //WebService提供服务的URL
@@ -46,7 +54,7 @@ public class WebUtils {
     //调用的soapaction
     static final String SOAPACTION="http://mestest.org/HelloWorld2";
 
-    public static Boolean getPLATOData(List<String>name,List<String>count,String startTime,String endTime){
+    public static int getPLATOData(List<String>name,List<String>count,String startTime,String endTime){
 
         //创建HttpTransportSE
         HttpTransportSE ht=new HttpTransportSE(SERVICE_URL);
@@ -71,21 +79,21 @@ public class WebUtils {
                 Log.i("web",result.getProperty(0).toString());
                 String data=result.getProperty(0).toString();
                 if (data!=null&&!data.equals("anyType{}")){
-                    if (data.equals("-1"))return false;
+                    if (data.equals("-1"))return dataFalse;
                     String[]nameCount=data.split(";");
                     for (String a:nameCount){
                         name.add(a.split(",")[1]);
                         count.add(a.split(",")[0]);
                     }
-                }else return false;
+                }else return dataNull;
                 //解析服务器响应的soap消息
-                return true;
+                return dataTrue;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
-        return  false;
+        return  netFalse;
     }
 }
