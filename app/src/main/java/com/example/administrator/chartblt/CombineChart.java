@@ -200,25 +200,7 @@ public class CombineChart extends View {
         maxHeight = (screenH - bottomMargin * 4) - topMargin;
     }
 
-    private void setData() {
-        if (barChartBeanList.size() == 0) {
-            maxValueInItem = 120;
-            barChartBeanList.add(new BarChartBean("111", 120, Color.parseColor("#6FC5F4")));
-            barChartBeanList.add(new BarChartBean("222", 100, Color.parseColor("#78DA9F")));
-            barChartBeanList.add(new BarChartBean("333", 90, Color.parseColor("#FCAE84")));
-            barChartBeanList.add(new BarChartBean("444", 70, Color.parseColor("#FF69B4")));
-            barChartBeanList.add(new BarChartBean("555", 40, Color.parseColor("#CD853F")));
-            barChartBeanList.add(new BarChartBean("666", 40, Color.parseColor("#FFF0F5")));
-            barChartBeanList.add(new BarChartBean("777", 40, Color.parseColor("#FFE4C4")));
-            barChartBeanList.add(new BarChartBean("888", 40, Color.parseColor("#FF6347")));
-            barChartBeanList.add(new BarChartBean("999", 50, Color.RED));
-            barChartBeanList.add(new BarChartBean("111", 70, Color.BLUE));
-            for (BarChartBean b : barChartBeanList) {
-                sum += b.getyNum();
-            }
 
-        }
-    }
 
     private void drawBar(Canvas canvas) {
         xStart = leftMargin;
