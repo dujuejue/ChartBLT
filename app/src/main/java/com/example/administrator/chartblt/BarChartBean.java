@@ -1,5 +1,7 @@
 package com.example.administrator.chartblt;
 
+import java.io.Serializable;
+
 /**
  * 　　　　　　　　┏┓　　　┏┓
  * 　　　　　　　┏┛┻━━━┛┻┓
@@ -24,7 +26,7 @@ package com.example.administrator.chartblt;
  * 　　　　　　　　　　┗┻┛　┗┻┛
  * Created by dutingjue on 2016/9/21.
  */
-public class BarChartBean {
+public class BarChartBean implements Serializable{
     private String barName;
     private float yNum;
     private int barColor;

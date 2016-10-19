@@ -68,10 +68,9 @@ public class WebUtils {
             if (envelope.getResponse()!=null){
                 //获取服务器响应的soap消息
                 SoapObject result= (SoapObject) envelope.bodyIn;
-
                 Log.i("web",result.getProperty(0).toString());
                 String data=result.getProperty(0).toString();
-                if (data!=null){
+                if (data!=null&&!data.equals("anyType{}")){
                     if (data.equals("-1"))return false;
                     String[]nameCount=data.split(";");
                     for (String a:nameCount){
