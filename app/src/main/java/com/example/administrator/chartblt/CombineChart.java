@@ -42,7 +42,6 @@ import java.util.List;
  */
 public class CombineChart extends View {
     private List<BarChartBean> barChartBeanList = new ArrayList<BarChartBean>();
-    ;
     private Paint barPaint, axisPaint, textPaint, pointPaint, linePaint, itemPaint, lrPaint;
     private int screenW, screenH;
     private int leftMargin, rightMargin, topMargin, bottomMargin;
@@ -83,10 +82,14 @@ public class CombineChart extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setData();
+//        setData();
         init();
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -94,7 +97,9 @@ public class CombineChart extends View {
         right.clear();
         rightY.clear();
         canvas.drawColor(BG_color);
-
+        if (barChartBeanList.size()==0){
+            return;
+        }
 
         //设置barWidth,maxRight和minRight
         barWidth = (int) ((screenW - rightMargin - leftMargin) / barChartBeanList.size() * zoomScale);
@@ -109,7 +114,7 @@ public class CombineChart extends View {
 
         //设置测试数据
 
-        setData();
+        //setData();
         //画柱状图和折线图
 
 
@@ -211,7 +216,7 @@ public class CombineChart extends View {
             for (BarChartBean b : barChartBeanList) {
                 sum += b.getyNum();
             }
-            Log.i("sum", "" + sum);
+
         }
     }
 
@@ -254,34 +259,6 @@ public class CombineChart extends View {
 
     }
 
-    private void drawLine(int i, int sumCurrent) {
-        int yCycle = 0;
-        if (i == 0) {
-            path.moveTo(leftMargin, screenH - bottomMargin * 4);
-        } else {
-            yCycle = sumCurrent / sum * maxHeight;
-            path.lineTo(right.get(i), screenH - bottomMargin * 4 - yCycle);
-        }
-
-//        path.moveTo(leftMargin, screenH - bottomMargin * 4);
-//        int a = 0;
-//        for (int i = 0; i < barChartBeanList.size(); i++) {
-//            a += (int) (barChartBeanList.get(i).getyNum() / sum * maxHeight);
-//            path.lineTo(right.get(i), screenH - bottomMargin * 4 - a);
-//        }
-//
-//        linePaint.setStrokeWidth(2);
-//        linePaint.setColor(Color.parseColor("#FFA500"));
-//        linePaint.setAntiAlias(true);
-//        linePaint.setStyle(Paint.Style.STROKE);
-//        canvas.drawPath(path, linePaint);
-//        int b = 0;
-//        for (int i = 0; i < barChartBeanList.size(); i++) {
-//            b += (int) (barChartBeanList.get(i).getyNum() / sum * maxHeight);
-//            pointPaint.setAntiAlias(true);
-//            canvas.drawCircle(right.get(i), screenH - bottomMargin * 4 - b, 10, pointPaint);
-//        }
-    }
 
     private void drawYText(Canvas canvas) {
         //画Y右轴
@@ -335,7 +312,7 @@ public class CombineChart extends View {
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 preDistance = getDistance(event);
-                if (preDistance > 10f) {
+                if (preDistance > 20f) {
                     mode = 2;
                     mid = (int) getMid(event);
                 }
@@ -393,6 +370,20 @@ public class CombineChart extends View {
             }
         }
         return -1;
+    }
+
+    /*从activity设置数据*/
+    public void setItemData(List<BarChartBean> barChartBeanList){
+        this.barChartBeanList=barChartBeanList;
+        float numMax=0;
+        for (BarChartBean b : barChartBeanList) {
+            sum += b.getyNum();
+            if (b.getyNum()>numMax){
+                numMax=b.getyNum();
+            }
+        }
+        maxValueInItem = (int) numMax;
+        invalidate();
     }
 
 }

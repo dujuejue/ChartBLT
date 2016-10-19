@@ -3,11 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.administrator.chartblt.MainActivity">
 
-    <com.example.administrator.chartblt.CombineChart
-        android:id="@+id/test"
+    <EditText
+        android:id="@+id/startTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:hint="起始时间" />
+
+    <EditText
+        android:id="@+id/endTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="终止时间" />
+
+    <Button
+        android:id="@+id/plato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="数据柏拉图" />
+
 
 </LinearLayout>
