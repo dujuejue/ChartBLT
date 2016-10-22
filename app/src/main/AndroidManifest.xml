@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlatoActivity"/>
+        <activity android:name=".InoutActivity"/>
     </application>
 
 </manifest>

@@ -23,6 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="数据柏拉图" />
-
+    <Button
+        android:id="@+id/inoutput"
+        android:text="投入产出"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
